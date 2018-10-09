@@ -9,7 +9,7 @@ public class Company {
 
   @Id
   @Column(name = "CODEMP")
-  private int companyCode;
+  private int code;
 
   @Column(name = "NOMEFANTASIA")
   private String fantasyName;
@@ -20,12 +20,12 @@ public class Company {
   @Column(name = "CIDADE")
   private String city;
 
-  public int getCompanyCode() {
-    return companyCode;
+  public int getCode() {
+    return code;
   }
 
-  public void setCompanyCode(int companyCode) {
-    this.companyCode = companyCode;
+  public void setCode(int code) {
+    this.code = code;
   }
 
   public String getFantasyName() {

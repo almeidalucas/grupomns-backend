@@ -9,24 +9,24 @@ public class Project {
 
   @Id
   @Column(name = "CODPROJ")
-  private int projectCode;
+  private int code;
 
   @Column(name = "PROJETO")
-  private String project;
+  private String name;
 
-  public int getProjectCode() {
-    return projectCode;
+  public int getCode() {
+    return code;
   }
 
-  public void setProjectCode(int projectCode) {
-    this.projectCode = projectCode;
+  public void setCode(int code) {
+    this.code = code;
   }
 
-  public String getProject() {
-    return project;
+  public String getName() {
+    return name;
   }
 
-  public void setProject(String project) {
-    this.project = project;
+  public void setName(String name) {
+    this.name = name;
   }
 }

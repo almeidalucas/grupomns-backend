@@ -1,10 +1,14 @@
 package com.grupomns.GrupoMNS;
 
-public class ErrorResponse {
+import com.grupomns.GrupoMNS.exception.RestApiBaseException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-  private String errorMessage;
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+public class ErrorResponse extends RestApiBaseException {
 
-  public String getErrorMessage() {
-    return errorMessage;
+  public ErrorResponse(String message) {
+    super(message);
   }
+
 }

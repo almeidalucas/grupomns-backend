@@ -9,10 +9,10 @@ public class User {
 
   @Id
   @Column(name = "CODUSU")
-  private String userCode;
+  private String code;
 
   @Column(name = "NOMEUSU")
-  private String username;
+  private String name;
 
   @Column(name = "APELIDO")
   private String nickname;
@@ -23,20 +23,20 @@ public class User {
   @Column(name = "SENHA")
   private String password;
 
-  public String getUserCode() {
-    return userCode;
+  public String getCode() {
+    return code;
   }
 
-  public void setUserCode(String userCode) {
-    this.userCode = userCode;
+  public void setCode(String code) {
+    this.code = code;
   }
 
-  public String getUsername() {
-    return username;
+  public String getName() {
+    return name;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getNickname() {

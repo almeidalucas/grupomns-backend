@@ -9,10 +9,10 @@ public class Partner {
 
   @Id
   @Column(name = "CODPARC")
-  private int partnerCode;
+  private int code;
 
   @Column(name = "NOMEPARC")
-  private String partnerName;
+  private String name;
 
   @Column(name = "CPF_CNPJ")
   private String cpfCNPJ;
@@ -26,20 +26,20 @@ public class Partner {
   @Column(name = "CIDADE")
   private String city;
 
-  public int getPartnerCode() {
-    return partnerCode;
+  public int getCode() {
+    return code;
   }
 
-  public void setPartnerCode(int partnerCode) {
-    this.partnerCode = partnerCode;
+  public void setCode(int code) {
+    this.code = code;
   }
 
-  public String getPartnerName() {
-    return partnerName;
+  public String getName() {
+    return name;
   }
 
-  public void setPartnerName(String partnerName) {
-    this.partnerName = partnerName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getCpfCNPJ() {
