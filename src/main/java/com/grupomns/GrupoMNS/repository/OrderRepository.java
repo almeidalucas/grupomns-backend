@@ -12,11 +12,14 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 public class OrderRepository {
 
   private final EntityManagerFactory entityManagerFactory;
+
+  private final static Logger LOGGER = Logger.getLogger(OrderRepository.class.getName());
 
   @Autowired
   public OrderRepository(EntityManagerFactory entityManagerFactory) {
@@ -29,6 +32,9 @@ public class OrderRepository {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
     entityManager.getTransaction().begin();
+
+    LOGGER.info("Date: " + orderHeader.getDtNeg().toString());
+    LOGGER.info("String formatted date: " + orderHeader.getFormatedDateDDMMYYY());
 
     StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_pedidocab")
         .registerStoredProcedureParameter("P_codemp", Integer.class, ParameterMode.IN)
