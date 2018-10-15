@@ -30,7 +30,7 @@ public class OrderService {
     this.productHeaderRepository = productHeaderRepository;
   }
 
-  public void insertOrder(Order order) {
+  public void insertOrder(Order order) throws Exception {
     Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
     orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList());

@@ -11,6 +11,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,7 +28,7 @@ public class OrderRepository {
   }
 
   @Transactional
-  public Integer insertOrderHeader(OrderHeader orderHeader) {
+  public Integer insertOrderHeader(OrderHeader orderHeader) throws Exception {
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -37,41 +38,42 @@ public class OrderRepository {
     LOGGER.info("String formatted date: " + orderHeader.getFormatedDateDDMMYYY());
 
     StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_pedidocab")
-        .registerStoredProcedureParameter("P_codemp", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codparc", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codvend", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codtipoper", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codtipvenda", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_dtneg", String.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_vlrnota", Float.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codnat", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codcencus", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codproj", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_obs", String.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_statusnota", String.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_Numnota", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_ad_nuapp", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_codusu", Integer.class, ParameterMode.IN)
-        .registerStoredProcedureParameter("P_nunota", Integer.class, ParameterMode.OUT)
-        .setParameter("P_codemp", orderHeader.getCodEmp())
-        .setParameter("P_codparc", orderHeader.getCodParc())
-        .setParameter("P_codvend", orderHeader.getCodVend())
-        .setParameter("P_codtipoper", orderHeader.getCodTipOper())
-        .setParameter("P_codtipvenda", orderHeader.getCodTipVenda())
-        .setParameter("P_dtneg", orderHeader.getFormatedDateDDMMYYY())
-        .setParameter("P_vlrnota", orderHeader.getVlrNota())
-        .setParameter("P_codnat", orderHeader.getCodNat())
-        .setParameter("P_codcencus", orderHeader.getCodCencus())
-        .setParameter("P_codproj", orderHeader.getCodProj())
-        .setParameter("P_obs", orderHeader.getObservacao())
-        .setParameter("P_statusnota", "L")
-        .setParameter("P_Numnota", 0)
-        .setParameter("P_ad_nuapp", orderHeader.getNuApp())
-        .setParameter("P_codusu", orderHeader.getCodUsu());
+        .registerStoredProcedureParameter("P_CODEMP", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODPARC", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODVEND", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODTIPOPER", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODTIPVENDA", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_DTNEG", Date.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_VLRNOTA", Float.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODNAT", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODCENCUS", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_CODPROJ", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_OBS", String.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_STATUSNOTA", String.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_NUMNOTA", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_AD_NUAPP", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.OUT)
+        .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
+        .setParameter("P_CODEMP", orderHeader.getCodEmp())
+        .setParameter("P_CODPARC", orderHeader.getCodParc())
+        .setParameter("P_CODVEND", orderHeader.getCodVend())
+        .setParameter("P_CODTIPOPER", orderHeader.getCodTipOper())
+        .setParameter("P_CODTIPVENDA", orderHeader.getCodTipVenda())
+        .setParameter("P_DTNEG", orderHeader.getDtNeg())
+        .setParameter("P_VLRNOTA", orderHeader.getVlrNota())
+        .setParameter("P_CODNAT", orderHeader.getCodNat())
+        .setParameter("P_CODCENCUS", orderHeader.getCodCencus())
+        .setParameter("P_CODPROJ", orderHeader.getCodProj())
+        .setParameter("P_OBS", orderHeader.getObservacao())
+        .setParameter("P_STATUSNOTA", "L")
+        .setParameter("P_NUMNOTA", 0)
+        .setParameter("P_AD_NUAPP", orderHeader.getNuApp());
     query.execute();
     entityManager.flush();
 
-    Integer nuNota = Integer.valueOf(query.getOutputParameterValue("P_nunota").toString());
+    Integer nuNota = Integer.valueOf(query.getOutputParameterValue("P_NUNOTA").toString());
+    if (query.getOutputParameterValue("P_MSG") != null)
+      throw new Exception("Erro ao inserir cabeçalho");
 
     entityTransaction.commit();
     entityManager.close();
@@ -80,7 +82,7 @@ public class OrderRepository {
   }
 
   @Transactional
-  public void insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) {
+  public void insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws Exception {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
     entityTransaction.begin();
@@ -96,6 +98,7 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_VLRUNIT", Float.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_VLRTOTAL", Float.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
           .setParameter("P_NUNOTA", nuNota)
           .setParameter("P_CODPROD", productHeader.getCod())
           .setParameter("P_QTDNEG", productHeader.getQtdItens())
@@ -106,6 +109,9 @@ public class OrderRepository {
           .setParameter("P_ADCODPROJ", productHeader.getAdCodProj());
 
       query.execute();
+
+      if (query.getOutputParameterValue("P_MSG") != null)
+        throw new Exception("Erro ao inserir item para o NuNota: " + nuNota);
     }
 
     entityManager.flush();

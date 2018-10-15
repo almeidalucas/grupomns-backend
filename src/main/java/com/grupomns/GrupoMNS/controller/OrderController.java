@@ -24,7 +24,7 @@ public class OrderController {
   }
 
   @PostMapping("/insert")
-  private Order insertOrder(@RequestBody Order order) {
+  private Order insertOrder(@RequestBody Order order) throws Exception {
     orderService.insertOrder(order);
 
     return order;
