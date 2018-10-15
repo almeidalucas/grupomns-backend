@@ -73,7 +73,7 @@ public class OrderRepository {
 
     Integer nuNota = Integer.valueOf(query.getOutputParameterValue("P_NUNOTA").toString());
     if (query.getOutputParameterValue("P_MSG") != null)
-      throw new Exception("Erro ao inserir cabeçalho");
+      throw new Exception("Erro ao inserir cabeçalho " + query.getOutputParameterValue("P_MSG"));
 
     entityTransaction.commit();
     entityManager.close();
@@ -111,7 +111,7 @@ public class OrderRepository {
       query.execute();
 
       if (query.getOutputParameterValue("P_MSG") != null)
-        throw new Exception("Erro ao inserir item para o NuNota: " + nuNota);
+        throw new Exception("Erro ao inserir item para o NuNota: " + nuNota + " " + query.getOutputParameterValue("P_MSG"));
     }
 
     entityManager.flush();
