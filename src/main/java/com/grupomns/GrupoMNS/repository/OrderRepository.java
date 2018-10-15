@@ -83,6 +83,8 @@ public class OrderRepository {
 
   @Transactional
   public void insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws Exception {
+    StringBuilder message = new StringBuilder();
+
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
     entityTransaction.begin();
@@ -110,12 +112,18 @@ public class OrderRepository {
 
       query.execute();
 
-      if (query.getOutputParameterValue("P_MSG") != null)
-        throw new Exception("Erro ao inserir item para o NuNota: " + nuNota + " " + query.getOutputParameterValue("P_MSG"));
+      if (query.getOutputParameterValue("P_MSG") != null) {
+        message.append(" ").append(productHeader.getDescricao());
+        productHeaderList.remove(productHeader);
+      }
     }
 
     entityManager.flush();
     entityTransaction.commit();
     entityManager.close();
+
+    if (!message.toString().isEmpty()) {
+      throw new Exception("Erro ao inserir produtos" + message);
+    }
   }
 }
