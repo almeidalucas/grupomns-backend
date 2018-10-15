@@ -112,10 +112,10 @@ public class OrderRepository {
 
       query.execute();
 
-      if (query.getOutputParameterValue("P_MSG") != null) {
+      /*if (query.getOutputParameterValue("P_MSG") != null) {
         message.append(" ").append(productHeader.getDescricao());
         productHeaderList.remove(productHeader);
-      }
+      }*/
     }
 
     entityManager.flush();
