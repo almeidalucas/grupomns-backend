@@ -110,13 +110,13 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
           .setParameter("P_NUNOTA", nuNota)
-          .setParameter("P_CODPROD", productHeader.getCod())
-          .setParameter("P_QTDNEG", productHeader.getQtdItens())
-          .setParameter("P_CODVOL", productHeader.getCodVol())
-          .setParameter("P_CONTROLE", "")
-          .setParameter("P_VLRUNIT", productHeader.getVlrUnit())
-          .setParameter("P_VLRTOTAL", productHeader.getVlrTotal())
-          .setParameter("P_ADCODPROJ", productHeader.getAdCodProj());
+          .setParameter("P_CODPROD", 5861)
+          .setParameter("P_QTDNEG", 2.0)
+          .setParameter("P_CODVOL", "UN")
+          .setParameter("P_CONTROLE", " ")
+          .setParameter("P_VLRUNIT", 2.0)
+          .setParameter("P_VLRTOTAL", 4.0)
+          .setParameter("P_ADCODPROJ", 35010301);
 
       query.execute();
 
