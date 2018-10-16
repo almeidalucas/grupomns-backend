@@ -91,6 +91,14 @@ public class OrderRepository {
 
     for (ProductHeader productHeader :
         productHeaderList) {
+      System.out.println("P_NUNOTA: " + nuNota);
+      System.out.println("P_CODPROD: " + productHeader.getCod());
+      System.out.println("P_QTDNEG: " + productHeader.getQtdItens());
+      System.out.println("P_CODVOL: " + productHeader.getCodVol());
+      System.out.println("P_CONTROLE: " + productHeader.getControle());
+      System.out.println("P_VLRUNIT: " + productHeader.getVlrUnit());
+      System.out.println("P_VLRTOTAL: " + productHeader.getVlrTotal());
+      System.out.println("P_ADCODPROJ: " + productHeader.getAdCodProj());
       StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_Pedidoitens")
           .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODPROD", Integer.class, ParameterMode.IN)
@@ -113,7 +121,7 @@ public class OrderRepository {
       query.execute();
 
       if (query.getOutputParameterValue("P_MSG") != null) {
-        message.append(" ").append(productHeader.getDescricao());
+        message.append(query.getOutputParameterValue("P_MSG").toString()).append(" ").append(productHeader.getDescricao());
 //        productHeaderList.remove(productHeader);
       }
     }
