@@ -93,36 +93,36 @@ public class OrderRepository {
         productHeaderList) {
       LOGGER.info("P_NUNOTA: " + nuNota);
       LOGGER.info("P_CODPROD: " + productHeader.getCod());
-      LOGGER.info("P_QTDNEG: " + String.valueOf(productHeader.getQtdItens()).replace(".", ","));
+      LOGGER.info("P_QTDNEG: " + productHeader.getQtdItens());
       LOGGER.info("P_CODVOL: " + productHeader.getCodVol());
       LOGGER.info("P_CONTROLE: " + productHeader.getControle());
-      LOGGER.info("P_VLRUNIT: " + String.valueOf(productHeader.getVlrUnit()).replace(".", ","));
-      LOGGER.info("P_VLRTOTAL: " + String.valueOf(productHeader.getVlrTotal()).replace(".", ","));
+      LOGGER.info("P_VLRUNIT: " + productHeader.getVlrUnit());
+      LOGGER.info("P_VLRTOTAL: " + productHeader.getVlrTotal());
       LOGGER.info("P_ADCODPROJ: " + productHeader.getAdCodProj());
       StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_Pedidoitens")
           .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODPROD", Integer.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_QTDNEG", String.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_QTDNEG", Float.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODVOL", String.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CONTROLE", String.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_VLRUNIT", String.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_VLRTOTAL", String.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_VLRUNIT", Float.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_VLRTOTAL", Float.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
           .setParameter("P_NUNOTA", nuNota)
           .setParameter("P_CODPROD", productHeader.getCod())
-          .setParameter("P_QTDNEG", String.valueOf(productHeader.getQtdItens()).replace(".", ","))
+          .setParameter("P_QTDNEG", productHeader.getQtdItens())
           .setParameter("P_CODVOL", productHeader.getCodVol())
           .setParameter("P_CONTROLE", productHeader.getControle())
-          .setParameter("P_VLRUNIT", String.valueOf(productHeader.getVlrUnit()).replace(".", ","))
-          .setParameter("P_VLRTOTAL", String.valueOf(productHeader.getVlrTotal()).replace(".", ","))
+          .setParameter("P_VLRUNIT", productHeader.getVlrUnit())
+          .setParameter("P_VLRTOTAL", productHeader.getVlrTotal())
           .setParameter("P_ADCODPROJ", productHeader.getAdCodProj());
 
       query.execute();
 
       if (query.getOutputParameterValue("P_MSG") != null) {
         message.append(query.getOutputParameterValue("P_MSG").toString()).append(" ").append(productHeader.getDescricao());
-        productHeaderList.remove(productHeader);
+//        productHeaderList.remove(productHeader);
       }
     }
 
