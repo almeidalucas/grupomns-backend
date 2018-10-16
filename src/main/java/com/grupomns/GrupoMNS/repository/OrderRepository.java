@@ -113,7 +113,7 @@ public class OrderRepository {
           .setParameter("P_CODPROD", productHeader.getCod())
           .setParameter("P_QTDNEG", productHeader.getQtdItens())
           .setParameter("P_CODVOL", productHeader.getCodVol())
-          .setParameter("P_CONTROLE", productHeader.getControle())
+          .setParameter("P_CONTROLE", "")
           .setParameter("P_VLRUNIT", productHeader.getVlrUnit())
           .setParameter("P_VLRTOTAL", productHeader.getVlrTotal())
           .setParameter("P_ADCODPROJ", productHeader.getAdCodProj());
