@@ -91,14 +91,14 @@ public class OrderRepository {
 
     for (ProductHeader productHeader :
         productHeaderList) {
-      System.out.println("P_NUNOTA: " + nuNota);
-      System.out.println("P_CODPROD: " + productHeader.getCod());
-      System.out.println("P_QTDNEG: " + productHeader.getQtdItens());
-      System.out.println("P_CODVOL: " + productHeader.getCodVol());
-      System.out.println("P_CONTROLE: " + productHeader.getControle());
-      System.out.println("P_VLRUNIT: " + productHeader.getVlrUnit());
-      System.out.println("P_VLRTOTAL: " + productHeader.getVlrTotal());
-      System.out.println("P_ADCODPROJ: " + productHeader.getAdCodProj());
+      LOGGER.info("P_NUNOTA: " + nuNota);
+      LOGGER.info("P_CODPROD: " + productHeader.getCod());
+      LOGGER.info("P_QTDNEG: " + productHeader.getQtdItens());
+      LOGGER.info("P_CODVOL: " + productHeader.getCodVol());
+      LOGGER.info("P_CONTROLE: " + productHeader.getControle());
+      LOGGER.info("P_VLRUNIT: " + productHeader.getVlrUnit());
+      LOGGER.info("P_VLRTOTAL: " + productHeader.getVlrTotal());
+      LOGGER.info("P_ADCODPROJ: " + productHeader.getAdCodProj());
       StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_Pedidoitens")
           .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODPROD", Integer.class, ParameterMode.IN)
