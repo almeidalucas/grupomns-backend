@@ -105,18 +105,18 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_QTDNEG", String.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODVOL", String.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CONTROLE", String.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_VLRUNIT", Integer.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_VLRTOTAL", Integer.class, ParameterMode.IN)
-          .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_VLRUNIT", String.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_VLRTOTAL", String.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_ADCODPROJ", String.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
           .setParameter("P_NUNOTA", "248630")
           .setParameter("P_CODPROD", "5861")
           .setParameter("P_QTDNEG", "0")
           .setParameter("P_CODVOL", "UN")
           .setParameter("P_CONTROLE", " ")
-          .setParameter("P_VLRUNIT", 0)
-          .setParameter("P_VLRTOTAL", 0)
-          .setParameter("P_ADCODPROJ", 35010301);
+          .setParameter("P_VLRUNIT", "0")
+          .setParameter("P_VLRTOTAL", "0")
+          .setParameter("P_ADCODPROJ", "35010301");
 
       query.execute();
 
