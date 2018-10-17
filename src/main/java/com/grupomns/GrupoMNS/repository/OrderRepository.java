@@ -100,7 +100,7 @@ public class OrderRepository {
       LOGGER.info("P_VLRTOTAL: " + productHeader.getVlrTotal());
       LOGGER.info("P_ADCODPROJ: " + productHeader.getAdCodProj());
       StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_Pedidoitens")
-          .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
+          .registerStoredProcedureParameter("P_NUNOTA", String.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODPROD", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_QTDNEG", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_CODVOL", String.class, ParameterMode.IN)
@@ -109,7 +109,7 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_VLRTOTAL", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
-          .setParameter("P_NUNOTA", 248630)
+          .setParameter("P_NUNOTA", "248630")
           .setParameter("P_CODPROD", 5861)
           .setParameter("P_QTDNEG", 0)
           .setParameter("P_CODVOL", "UN")
