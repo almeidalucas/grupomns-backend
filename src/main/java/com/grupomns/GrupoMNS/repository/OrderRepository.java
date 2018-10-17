@@ -111,11 +111,11 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
           .setParameter("P_NUNOTA", "248630")
           .setParameter("P_CODPROD", "5861")
-          .setParameter("P_QTDNEG", "0")
+          .setParameter("P_QTDNEG", "2.0")
           .setParameter("P_CODVOL", "UN")
           .setParameter("P_CONTROLE", " ")
-          .setParameter("P_VLRUNIT", "0")
-          .setParameter("P_VLRTOTAL", "0")
+          .setParameter("P_VLRUNIT", "3.0")
+          .setParameter("P_VLRTOTAL", "6.0")
           .setParameter("P_ADCODPROJ", "35010301");
 
       query.execute();
