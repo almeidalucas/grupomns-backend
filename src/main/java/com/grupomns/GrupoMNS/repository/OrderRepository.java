@@ -82,7 +82,7 @@ public class OrderRepository {
   }
 
   @Transactional
-  public void insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws Exception {
+  public String insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) {
     StringBuilder message = new StringBuilder();
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -131,7 +131,9 @@ public class OrderRepository {
     entityManager.close();
 
     if (!message.toString().isEmpty()) {
-      throw new Exception("Erro ao inserir produtos" + message);
+      return "Erro ao inserir produtos" + message;
     }
+
+    return "";
   }
 }
