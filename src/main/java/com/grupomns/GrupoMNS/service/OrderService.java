@@ -31,9 +31,9 @@ public class OrderService {
   }
 
   public void insertOrder(Order order) throws Exception {
-//    Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
+    Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
-    orderRepository.insertOrderProductList(123, order.getProductHeaderList());
+    orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList());
   }
 
   public List<Order> fetchOrderList(int codVend) {

@@ -109,11 +109,11 @@ public class OrderRepository {
           .registerStoredProcedureParameter("P_VLRTOTAL", Float.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_ADCODPROJ", Integer.class, ParameterMode.IN)
           .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
-          .setParameter("P_NUNOTA", 248631)
+          .setParameter("P_NUNOTA", nuNota)
           .setParameter("P_CODPROD", productHeader.getCod())
           .setParameter("P_QTDNEG", productHeader.getQtdItens())
           .setParameter("P_CODVOL", productHeader.getCodVol())
-          .setParameter("P_CONTROLE", " ")
+          .setParameter("P_CONTROLE", productHeader.getControle())
           .setParameter("P_VLRUNIT", productHeader.getVlrUnit())
           .setParameter("P_VLRTOTAL", productHeader.getVlrTotal())
           .setParameter("P_ADCODPROJ", productHeader.getAdCodProj());
@@ -122,7 +122,7 @@ public class OrderRepository {
 
       if (query.getOutputParameterValue("P_MSG") != null) {
         message.append(query.getOutputParameterValue("P_MSG").toString()).append(" ").append(productHeader.getDescricao());
-//        productHeaderList.remove(productHeader);
+        productHeaderList.remove(productHeader);
       }
     }
 
