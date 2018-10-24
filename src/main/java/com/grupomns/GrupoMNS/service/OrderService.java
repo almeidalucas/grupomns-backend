@@ -1,8 +1,10 @@
 package com.grupomns.GrupoMNS.service;
 
+import com.grupomns.GrupoMNS.entity.ErrorMessage;
 import com.grupomns.GrupoMNS.entity.Order;
 import com.grupomns.GrupoMNS.entity.OrderHeader;
 import com.grupomns.GrupoMNS.entity.ProductHeader;
+import com.grupomns.GrupoMNS.entity.ResponseMessage;
 import com.grupomns.GrupoMNS.repository.OrderHeaderRepository;
 import com.grupomns.GrupoMNS.repository.OrderRepository;
 import com.grupomns.GrupoMNS.repository.ProductHeaderRepository;
@@ -30,10 +32,28 @@ public class OrderService {
     this.productHeaderRepository = productHeaderRepository;
   }
 
-  public String insertOrder(Order order) throws Exception {
+  public Order insertOrder(Order order) throws ErrorMessage {
     Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
-    return orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList());
+    order.getHeader().setNuNota(nuNota);
+    order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
+
+    return order;
+  }
+
+  public Order editOrder(Order order) throws ErrorMessage {
+    orderRepository.removeOrder(order.getHeader().getNuNota());
+
+    Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
+
+    order.getHeader().setNuNota(nuNota);
+    order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
+
+    return order;
+  }
+
+  public void removeOrder(Integer nuNota) throws ErrorMessage {
+    orderRepository.removeOrder(nuNota);
   }
 
   public List<Order> fetchOrderList(int codVend) {

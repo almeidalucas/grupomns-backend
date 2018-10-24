@@ -1,7 +1,9 @@
 package com.grupomns.GrupoMNS.repository;
 
+import com.grupomns.GrupoMNS.entity.ErrorMessage;
 import com.grupomns.GrupoMNS.entity.OrderHeader;
 import com.grupomns.GrupoMNS.entity.ProductHeader;
+import com.grupomns.GrupoMNS.entity.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +30,30 @@ public class OrderRepository {
   }
 
   @Transactional
-  public Integer insertOrderHeader(OrderHeader orderHeader) throws Exception {
+  public void removeOrder(Integer nuNota) throws ErrorMessage {
+
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    EntityTransaction entityTransaction = entityManager.getTransaction();
+    entityManager.getTransaction().begin();
+
+    LOGGER.info("removeOrder: " + nuNota);
+
+    StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.DEL_PEDIDOCAB")
+        .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
+        .registerStoredProcedureParameter("P_MSG", String.class, ParameterMode.OUT)
+        .setParameter("P_NUNOTA", nuNota);
+    query.execute();
+    entityManager.flush();
+
+    if (query.getOutputParameterValue("P_MSG") != null)
+      throw new ErrorMessage("500", "Erro ao deletar pedido " + nuNota + " - " +query.getOutputParameterValue("P_MSG"), null);
+
+    entityTransaction.commit();
+    entityManager.close();
+  }
+
+  @Transactional
+  public Integer insertOrderHeader(OrderHeader orderHeader) throws ErrorMessage {
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -73,7 +98,7 @@ public class OrderRepository {
 
     Integer nuNota = Integer.valueOf(query.getOutputParameterValue("P_NUNOTA").toString());
     if (query.getOutputParameterValue("P_MSG") != null)
-      throw new Exception("Erro ao inserir cabeçalho " + query.getOutputParameterValue("P_MSG"));
+      throw new ErrorMessage("500", "Erro ao inserir cabeçalho " + query.getOutputParameterValue("P_MSG"), null);
 
     entityTransaction.commit();
     entityManager.close();
@@ -82,7 +107,7 @@ public class OrderRepository {
   }
 
   @Transactional
-  public String insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) {
+  public List<ProductHeader> insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws ErrorMessage {
     StringBuilder message = new StringBuilder();
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -131,9 +156,9 @@ public class OrderRepository {
     entityManager.close();
 
     if (!message.toString().isEmpty()) {
-      return "Erro ao inserir produtos" + message;
+      throw new ErrorMessage("500", "Erro ao inserir produtos " + message, productHeaderList);
     }
 
-    return "";
+    return productHeaderList;
   }
 }
