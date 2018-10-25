@@ -148,6 +148,8 @@ public class OrderRepository {
       if (query.getOutputParameterValue("P_MSG") != null) {
         message.append(query.getOutputParameterValue("P_MSG").toString()).append(" ").append(productHeader.getDescricao());
         productHeaderList.remove(productHeader);
+      } else {
+        productHeader.setNuNota(nuNota);
       }
     }
 

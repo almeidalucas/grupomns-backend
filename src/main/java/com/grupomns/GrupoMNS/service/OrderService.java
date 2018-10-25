@@ -41,15 +41,13 @@ public class OrderService {
     return order;
   }
 
-  public Order editOrder(Order order) throws ErrorMessage {
+  public void editOrder(Order order) throws ErrorMessage {
     orderRepository.removeOrder(order.getHeader().getNuNota());
 
     Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
     order.getHeader().setNuNota(nuNota);
     order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
-
-    return order;
   }
 
   public void removeOrder(Integer nuNota) throws ErrorMessage {

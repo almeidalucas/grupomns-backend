@@ -35,8 +35,9 @@ public class OrderController {
 
   @PutMapping("/edit")
   private ResponseMessage editOrder(@RequestBody Order order) throws ErrorMessage {
-    Order editedOrder = orderService.editOrder(order);
-    return new ResponseMessage("200", "Pedido " + editedOrder.getHeader().getNuNota() + " atualizado para " + order.getHeader().getNuNota(), editedOrder);
+    int nuNota = order.getHeader().getNuNota();
+    orderService.editOrder(order);
+    return new ResponseMessage("200", "Pedido " + nuNota + " atualizado para " + order.getHeader().getNuNota(), order);
   }
 
   @DeleteMapping("/delete")
