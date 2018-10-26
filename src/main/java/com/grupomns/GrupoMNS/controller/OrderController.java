@@ -29,14 +29,14 @@ public class OrderController {
 
   @PostMapping("/insert")
   private ResponseMessage insertOrder(@RequestBody Order order) throws ErrorMessage {
-    Order newOrder = orderService.insertOrder(order);
+    Order newOrder = orderService.insertOrder(order, false);
     return new ResponseMessage("200", "Pedido " + newOrder.getHeader().getNuNota() + " inserido com sucesso!", newOrder);
   }
 
   @PutMapping("/edit")
   private ResponseMessage editOrder(@RequestBody Order order) throws ErrorMessage {
     int nuNota = order.getHeader().getNuNota();
-    orderService.editOrder(order);
+    orderService.insertOrder(order, true);
     return new ResponseMessage("200", "Pedido " + nuNota + " atualizado para " + order.getHeader().getNuNota(), order);
   }
 

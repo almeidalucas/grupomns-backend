@@ -4,7 +4,6 @@ import com.grupomns.GrupoMNS.entity.ErrorMessage;
 import com.grupomns.GrupoMNS.entity.Order;
 import com.grupomns.GrupoMNS.entity.OrderHeader;
 import com.grupomns.GrupoMNS.entity.ProductHeader;
-import com.grupomns.GrupoMNS.entity.ResponseMessage;
 import com.grupomns.GrupoMNS.repository.OrderHeaderRepository;
 import com.grupomns.GrupoMNS.repository.OrderRepository;
 import com.grupomns.GrupoMNS.repository.ProductHeaderRepository;
@@ -32,22 +31,18 @@ public class OrderService {
     this.productHeaderRepository = productHeaderRepository;
   }
 
-  public Order insertOrder(Order order) throws ErrorMessage {
+  public Order insertOrder(Order order, boolean isEdit) throws ErrorMessage {
+    if (isEdit)
+      orderRepository.removeOrder(order.getHeader().getNuNota());
+
     Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
     order.getHeader().setNuNota(nuNota);
     order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
+
+    orderRepository.geraRateio(nuNota);
 
     return order;
-  }
-
-  public void editOrder(Order order) throws ErrorMessage {
-    orderRepository.removeOrder(order.getHeader().getNuNota());
-
-    Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
-
-    order.getHeader().setNuNota(nuNota);
-    order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
   }
 
   public void removeOrder(Integer nuNota) throws ErrorMessage {

@@ -163,4 +163,20 @@ public class OrderRepository {
 
     return productHeaderList;
   }
+
+  @Transactional
+  public void geraRateio(Integer nuNota) {
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    EntityTransaction entityTransaction = entityManager.getTransaction();
+    entityTransaction.begin();
+
+    StoredProcedureQuery query = entityManager.createStoredProcedureQuery("STP_GERA_RATEIO_CAB_MNS")
+        .registerStoredProcedureParameter("P_NUNOTA", Integer.class, ParameterMode.IN)
+        .setParameter("P_NUNOTA", nuNota);
+
+    query.execute();
+    entityManager.flush();
+    entityTransaction.commit();
+    entityManager.close();
+  }
 }
