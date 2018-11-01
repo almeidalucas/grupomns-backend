@@ -60,7 +60,7 @@ public class OrderRepository {
     entityManager.getTransaction().begin();
 
     LOGGER.info("Date: " + orderHeader.getDtNeg().toString());
-    LOGGER.info("String formatted date: " + orderHeader.getFormatedDateDDMMYYY());
+    LOGGER.info("String formatted date: " + orderHeader.getFormattedDateDDMMYYYY());
 
     StoredProcedureQuery query = entityManager.createStoredProcedureQuery("PKG_APP_MNS.Ins_pedidocab")
         .registerStoredProcedureParameter("P_CODEMP", Integer.class, ParameterMode.IN)

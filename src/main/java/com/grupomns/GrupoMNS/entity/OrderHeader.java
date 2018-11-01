@@ -254,7 +254,7 @@ public class OrderHeader {
     this.tipMov = tipMov;
   }
 
-  public String getFormatedDateDDMMYYY() {
+  public String getFormattedDateDDMMYYYY() {
     if (this.dtNeg == null)
       return null;
 
