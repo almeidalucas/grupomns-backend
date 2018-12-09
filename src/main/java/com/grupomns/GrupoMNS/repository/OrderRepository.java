@@ -14,6 +14,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -107,12 +108,14 @@ public class OrderRepository {
   }
 
   @Transactional
-  public List<ProductHeader> insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws ErrorMessage {
+  public ResponseMessage insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws ErrorMessage {
     StringBuilder message = new StringBuilder();
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
     entityTransaction.begin();
+
+    List<ProductHeader> productHeaderListToRemove = new ArrayList<>();
 
     for (ProductHeader productHeader :
         productHeaderList) {
@@ -146,22 +149,24 @@ public class OrderRepository {
       query.execute();
 
       if (query.getOutputParameterValue("P_MSG") != null) {
-        message.append(query.getOutputParameterValue("P_MSG").toString()).append(" ").append(productHeader.getDescricao());
-        productHeaderList.remove(productHeader);
+        message.append(query.getOutputParameterValue("P_MSG").toString()).append(" - ").append(productHeader.getDescricao());
+        productHeaderListToRemove.add(productHeader);
       } else {
         productHeader.setNuNota(nuNota);
       }
     }
+
+    productHeaderList.removeAll(productHeaderListToRemove);
 
     entityManager.flush();
     entityTransaction.commit();
     entityManager.close();
 
     if (!message.toString().isEmpty()) {
-      throw new ErrorMessage("500", "Erro ao inserir produtos " + message, productHeaderList);
+      return new ResponseMessage("500", "Erro ao inserir produtos - " + message, productHeaderList);
     }
 
-    return productHeaderList;
+    return new ResponseMessage("200", "Pedido " + nuNota + " inserido com sucesso!", productHeaderList);
   }
 
   @Transactional

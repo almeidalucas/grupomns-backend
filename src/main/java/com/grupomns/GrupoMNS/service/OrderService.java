@@ -1,9 +1,6 @@
 package com.grupomns.GrupoMNS.service;
 
-import com.grupomns.GrupoMNS.entity.ErrorMessage;
-import com.grupomns.GrupoMNS.entity.Order;
-import com.grupomns.GrupoMNS.entity.OrderHeader;
-import com.grupomns.GrupoMNS.entity.ProductHeader;
+import com.grupomns.GrupoMNS.entity.*;
 import com.grupomns.GrupoMNS.repository.OrderHeaderRepository;
 import com.grupomns.GrupoMNS.repository.OrderRepository;
 import com.grupomns.GrupoMNS.repository.ProductHeaderRepository;
@@ -31,18 +28,23 @@ public class OrderService {
     this.productHeaderRepository = productHeaderRepository;
   }
 
-  public Order insertOrder(Order order, boolean isEdit) throws ErrorMessage {
+  @SuppressWarnings("unchecked")
+  public ResponseMessage insertOrder(Order order, boolean isEdit) throws ErrorMessage {
     if (isEdit)
       orderRepository.removeOrder(order.getHeader().getNuNota());
 
     Integer nuNota = orderRepository.insertOrderHeader(order.getHeader());
 
     order.getHeader().setNuNota(nuNota);
-    order.setProductHeaderList(orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
+    ResponseMessage responseMessage = (orderRepository.insertOrderProductList(nuNota, order.getProductHeaderList()));
 
     orderRepository.geraRateio(nuNota);
 
-    return order;
+    Order newOrder = new Order();
+    newOrder.setHeader(order.getHeader());
+    newOrder.setProductHeaderList((List<ProductHeader>) responseMessage.getData());
+
+    return new ResponseMessage(responseMessage.getCode(), responseMessage.getMessage(), newOrder);
   }
 
   public void removeOrder(Integer nuNota) throws ErrorMessage {
