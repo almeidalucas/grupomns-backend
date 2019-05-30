@@ -46,11 +46,13 @@ public class OrderRepository {
     query.execute();
     entityManager.flush();
 
-    if (query.getOutputParameterValue("P_MSG") != null)
-      throw new ErrorMessage("500", "Erro ao deletar pedido " + nuNota + " - " +query.getOutputParameterValue("P_MSG"), null);
-
-    entityTransaction.commit();
-    entityManager.close();
+    try {
+      if (query.getOutputParameterValue("P_MSG") != null)
+        throw new ErrorMessage("500", "Erro ao deletar pedido " + nuNota + " - " + query.getOutputParameterValue("P_MSG"), null);
+    } finally {
+      entityTransaction.commit();
+      entityManager.close();
+    }
   }
 
   @Transactional
@@ -98,17 +100,22 @@ public class OrderRepository {
     entityManager.flush();
 
     Integer nuNota = Integer.valueOf(query.getOutputParameterValue("P_NUNOTA").toString());
-    if (query.getOutputParameterValue("P_MSG") != null)
-      throw new ErrorMessage("500", "Erro ao inserir cabeçalho " + query.getOutputParameterValue("P_MSG"), null);
+    try {
+      if (query.getOutputParameterValue("P_MSG") != null)
+        throw new ErrorMessage("500", "Erro ao inserir cabeçalho " + query.getOutputParameterValue("P_MSG"), null);
 
-    entityTransaction.commit();
-    entityManager.close();
+      entityTransaction.commit();
+      entityManager.close();
+    } finally {
+      entityTransaction.commit();
+      entityManager.close();
+    }
 
     return nuNota;
   }
 
   @Transactional
-  public ResponseMessage insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) throws ErrorMessage {
+  public ResponseMessage insertOrderProductList(Integer nuNota, List<ProductHeader> productHeaderList) {
     StringBuilder message = new StringBuilder();
 
     EntityManager entityManager = entityManagerFactory.createEntityManager();
